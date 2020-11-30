@@ -8,6 +8,7 @@ const onerror = require('koa-onerror');
 const bodyparser = require('koa-bodyparser');
 const logger = require('koa-logger');
 const mongoose = require('mongoose');
+const cors = require('@koa/cors');
 
 const { jwtMiddleware } = require('./model/token');
 
@@ -49,6 +50,9 @@ app.use(users.routes(), users.allowedMethods());
 app.use(inventorys.routes(), inventorys.allowedMethods());
 app.use(items.routes(), items.allowedMethods());
 app.use(status.routes(), status.allowedMethods());
+
+// cors
+app.use(cors());
 
 // error-handling
 app.on('error', (err) => {
