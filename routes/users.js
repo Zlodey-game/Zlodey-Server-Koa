@@ -27,12 +27,12 @@ router.post('/login', async (ctx) => {
 });
 
 router.get('/register', async (ctx) => {
-  ctx.render('join');
+  await ctx.render('join');
 });
 
 router.post('/register', async (ctx) => {
   user.id = ctx.request.body.id;
-  user.nickname = ctx.body.nickname;
+  user.nickname = ctx.request.body.nickname;
   user.pw = ctx.request.body.pw;
 
   await user.save();
