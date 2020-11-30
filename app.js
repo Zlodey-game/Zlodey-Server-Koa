@@ -33,6 +33,9 @@ app.use(views(`${__dirname}/views`, {
   extension: 'html',
 }));
 
+// cors
+app.use(cors());
+
 // jwt
 app.use(jwtMiddleware);
 
@@ -50,9 +53,6 @@ app.use(users.routes(), users.allowedMethods());
 app.use(inventorys.routes(), inventorys.allowedMethods());
 app.use(items.routes(), items.allowedMethods());
 app.use(status.routes(), status.allowedMethods());
-
-// cors
-app.use(cors());
 
 // error-handling
 app.on('error', (err) => {
