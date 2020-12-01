@@ -26,7 +26,11 @@ router.get('/inventory', async (ctx) => {
     }
   }
 
-  ctx.body = await ItemModel.find({ $or: or });
+  if (or.length !== 0) {
+    ctx.body = await ItemModel.find({ $or: or });
+  } else {
+    ctx.body = null;
+  }
 });
 
 module.exports = router;

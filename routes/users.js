@@ -44,4 +44,11 @@ router.get('/logout', async (ctx) => {
   ctx.status = 204;
 });
 
+router.get('/exists', async (ctx) => {
+  const user = await UserModel.findOne({ id: ctx.request.query.id });
+
+  if (user === null) ctx.body = 'no user';
+  else ctx.body = 'exists';
+});
+
 module.exports = router;
