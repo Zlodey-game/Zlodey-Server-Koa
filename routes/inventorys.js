@@ -4,6 +4,10 @@ router.prefix('/inventorys');
 
 const InventoryModel = require('../model/inventorys');
 
+router.get('/', async (ctx) => {
+  ctx.body = await InventoryModel.findOrCreate({ userID: ctx.request.user.userID })
+})
+
 router.post('/', async (ctx) => {
   const inventory = {};
 

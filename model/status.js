@@ -10,7 +10,7 @@ const statusSchema = new Schema({
   atk: { type: Number, default: 1 },
   def: { type: Number, default: 1 },
   agi: { type: Number, default: 1 },
-  hp: { type: Number, default: 1 },
+  hp: { type: Number, default: 20 },
 
   curHp: { type: Number, default: 20 },
   mp: { type: Number, default: 20 },

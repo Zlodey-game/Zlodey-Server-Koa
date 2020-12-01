@@ -7,6 +7,13 @@ const TokenModel = require('../model/token');
 
 const user = new UserModel();
 
+router.get('/exists', async (ctx) => {
+  const user = await UserModel.findOne({ id: ctx.request.query.id });
+
+  if (user === null) ctx.body = 'no user';
+  else ctx.body = 'exists'
+});
+
 router.get('/login', async (ctx) => {
   await ctx.render('login');
 });
