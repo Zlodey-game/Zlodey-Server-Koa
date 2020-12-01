@@ -113,6 +113,7 @@
     let x = 0;
     let size = 0;
     let isCheckOut = false;
+    let curHp = 0;
 
     function gameLoop(){  
         calcKeyInput();
@@ -122,6 +123,12 @@
             damageMonster();
             checkRecall();
             if(isCheckOut){
+                if(curHp == 0){
+                    curHp = playerUnit.hp;
+                }
+
+                if(curHp != playerUnit.hp) isCheckOut = false;
+                
                 playerUnit.mp += 0.2
                 agl += 2.3;
 
