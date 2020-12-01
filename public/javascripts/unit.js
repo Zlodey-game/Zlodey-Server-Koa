@@ -39,16 +39,12 @@ function initPlayer(unit) {
   unit.y = canvas.height / 2 - 18;
   unit.agl = 0;
 
-  unit.atk = 1;
-  unit.def = 0;
-  unit.maxHp = 30;
-  unit.agi = 0;
-  unit.lv = 1;
-  unit.exp = 0;
-  unit.stat = 2;
-
-  unit.hp = 30;
+  getStatus();
+  
   unit.mp = 0;
+
+  getinven();
+  
 }
 
 function setUnitSize(unit, wd, hd, speed) {
@@ -99,6 +95,8 @@ function setPlayerStatus(unit, mode, origin) {
       else if (itemInfo[inventory[mode].id - 1].type == 'pants') unit.maxHp -= itemInfo[inventory[mode].id - 1].maxHp;
       else if (itemInfo[inventory[mode].id - 1].type == 'shoes') unit.agi -= itemInfo[inventory[mode].id - 1].agi;
     }
+    setInven(inventory);
+    setStat('stats');
   }
 }
 
@@ -132,7 +130,10 @@ function attack() {
           playerUnit.lv++;
           playerUnit.hp = playerUnit.maxHp;
           playerUnit.stat += 3;
+          setStat('lv');
+          setStat('skillPoint');
         }
+        setStat('exp');
         dropItem(unit.x, unit.y);
 
         if (i > -1) monsters.splice(i, 1);
@@ -204,7 +205,10 @@ function damageMonster() {
         playerUnit.y -= Math.cos(agl * 0.017453) * (m.oY_speed * 10.2);
 
         if (playerUnit.hp < 0) {
-          for (i = 9; i < 13; i++) inventory[i] = {};
+          for (i = 9; i < 13; i++){
+            setPlayerStatus(playerUnit, null, i)
+            inventory[i] = {};
+          }
           isPause = true;
         }
       }
@@ -213,17 +217,23 @@ function damageMonster() {
 }
 
 function dropItem(x, y) {
-  const min = Math.ceil(2);
-  const max = Math.floor(14);
+  let min = Math.ceil(0);
+  let max = Math.floor(16);
+  const randItem = Math.floor(Math.random() * (max - min)) + min; // 최댓값은 제외, 최솟값은 포함
 
-  const itemNum = Math.floor(Math.random() * (max - min)) + min; // 최댓값은 제외, 최솟값은 포함
+  min = Math.ceil(0);
+  max = Math.floor(100);
+  const randDrop = Math.floor(Math.random() * (max - min)) + min; // 최댓값은 제외, 최솟값은 포함
+  
+  console.log(randItem, itemInfo[randItem].drop, randDrop/100);
 
-  // console.log(x, y, itemNum);
-  const item = {
-    itemId: itemNum,
-    x,
-    y,
-    len: canvas.width * 0.07,
-  };
-  droppedItems.push(item);
+  if(itemInfo[randItem].drop > randDrop/100){
+    const item = {
+      itemId: randItem,
+      x: x,
+      y: y,
+      len: canvas.width * 0.07,
+    };
+    droppedItems.push(item);
+  }
 }

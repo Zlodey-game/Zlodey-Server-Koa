@@ -1,13 +1,13 @@
 function setImage(){
     ghost = new Image();
-    ghost.src = "../images/ghost.png";
+    ghost.src = "../public/images/ghost.png";
 
     backgroundImg = new Image();
-    backgroundImg.src = "../images/asphalt.jpg";
+    backgroundImg.src = "../public/images/asphalt.jpg";
 
-    for(let i=2; i<14; i++){
+    for(let i=1; i<=16; i++){
         items[i] = new Image();
-        items[i].src = `../images/${i}.png`;
+        items[i].src = `../public/images/${i}.png`;
     }
     //console.log(ghost);
 }

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>road</title>
+    
+</head>
+<link rel="stylesheet" href="../public/stylesheets/game.css">
+<script src="../public/javascripts/roadUi.js"></script>
+
+<!-- <script src="../javascripts/mainUi.js"></script>
+<script src="../javascripts/input.js"></script>
+<script src="../javascripts/unit.js"></script>
+<script src="../javascripts/window.js"></script> -->
+
+<script src="../public/javascripts/mainUi.js"></script>
+<script src="../public/javascripts/input.js"></script>
+<script src="../public/javascripts/unit.js"></script>
+<script src="../public/javascripts/window.js"></script>
+<script src="../public/javascripts/api.js"></script>
+
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+
+
+<!-- <body onload="draw();"> -->
+<body style="margin: 0;">
+
+    <a href="/users/logout" id = "logout">로그아웃 하기</a>
+
+    <canvas id="canvas">
+    </canvas>
+</body>
+<script type="application/javascript">
+    const logoutBt = document.getElementById('logout');
+
+    let canvas, canvasCtx;
+    let canvasBuffer, bufferCtx;
+
+    let canvasOldWidth, canvasOldHeight;
+
+    let playerUnit = {}; //Player Unit Property
+    let inventory = [];
+
+    let monsters = [];
+    const monsterRegenSpeed = 10 * 1000;     //Gap of Thread
+
+    const threadSpeed = 12;     //Gap of Thread
+    let keyPressOn = {};//pressed - trueaaaaaa
+
+    let isPause = false;
+    let isPush = false;
+    let oldPush = 0;
+    let pointer = {};
+
+    let droppedItems = [];
+
+    let backgroundImg;
+    let items = [];
+    let itemInfo = []
+    
+
+    let gameLoopThread;  //animation Thread ID
+
+    let mainBox = {};
+    let mainBar = {};
+    let inven = {};
+    let statBox = {};
+    let statBar = {};
+    let LVupBox = {};
+    let invenBox = {};
+    let pauseBox = {};
+
+    window.addEventListener("load", init, false);
+
+    function setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        var expires = "expires="+d.toUTCString();
+        document.cookie = cname + "=" + cvalue + "; " + expires;
+    }
+    function init(){
+        //canvas = document.getElementById("canvas");
+
+        setCookie('accessToken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiJ3YXNkIiwiaWF0IjoxNjA2NzIzOTgzLCJleHAiOjE2MDY4MTAzODN9.oRUrnqVMxv11GweokfLKr5wluCPb__OvVbGlc61pzKc', 100);
+        canvasCtx = canvas.getContext("2d");
+        bufferCtx = canvasBuffer.getContext("2d");
+        setItem();
+
+        initPlayer(playerUnit);
+
+        pointer.x = playerUnit.x;
+        pointer.y = playerUnit.y;
+
+        document.addEventListener("keydown", getKeyDown, false);
+        document.addEventListener("keyup", getKeyUp, false);
+
+        setImage();
+
+        gameLoopThread = setInterval(gameLoop, threadSpeed);
+        monsterRegenThread = setInterval(genMonster, monsterRegenSpeed);
+
+        genMonster();
+
+        for(let i=0; i<13; i++){
+            inventory[i] = {};
+            inventory[i].id = undefined;
+            inventory[i].clicked = false;
+        }
+    }
+
+    let agl = 0;
+    let x = 0;
+    let size = 0;
+    let isCheckOut = false;
+
+    function gameLoop(){  
+        calcKeyInput();
+        displayAll();
+        if(!isPause){
+            moveMonster();
+            damageMonster();
+            checkRecall();
+            if(isCheckOut){
+                playerUnit.mp += 0.2
+                agl += 2.3;
+
+                if(size < 100){
+                    x+=100;
+                    size = Math.log(x) * 10;
+                    console.log(agl);
+                }
+                else size = 100;
+
+                if(playerUnit.mp > 99){
+                    // 이동
+                }
+            }
+            else{
+                if(size != 0 || x != 0){
+                    size = x = 0;
+                    playerUnit.mp = 0;
+                }
+            }
+        }
+    }
+
+    function displayAll(){
+        drawRoad();
+        // getinven(inven => {
+        //     for(let i=0; i<13; i++){
+        //     console.log(inven[i+1]);
+            
+        //     }
+        // });
+        drawDroppedItems();
+
+        for(unit of monsters){
+            drawUnit(unit, ghost);
+            drawMonsterHPBar(color.black, color.red, color.gold, unit);
+        }
+
+        drawRecallRing(size, agl);
+        setPlayerStatus(playerUnit, 'speed');
+        drawUnit(playerUnit);
+
+        drawMainUI();
+        
+        canvasCtx.drawImage(canvasBuffer, 0, 0);
+    }
+
+    function checkRecall(){
+        const wasd = ['38', '40', '37', '39'];
+
+        if(keyPressOn["66"] && !isPause && !isCheckOut){
+            isCheckOut = true;
+        }
+        else{
+            for(key of wasd){
+                if(keyPressOn[key]){
+                    isCheckOut = false;
+                    break;
+                }
+            }
+        }
+        
+    }
+</script>
+</html>
+accessToken
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiJ3YXNkIiwiaWF0IjoxNjA2NzIzOTgzLCJleHAiOjE2MDY4MTAzODN9.oRUrnqVMxv11GweokfLKr5wluCPb__OvVbGlc61pzKc

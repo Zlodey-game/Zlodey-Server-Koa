@@ -3,17 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>road</title>
+    <title>village</title>
 
     
 </head>
 <link rel="stylesheet" href="../stylesheets/game.css">
-<script src="../javascripts/roadUi.js"></script>
+<script src="../javascripts/villageUi.js"></script>
 
 <script src="../javascripts/mainUi.js"></script>
 <script src="../javascripts/input.js"></script>
 <script src="../javascripts/unit.js"></script>
 <script src="../javascripts/window.js"></script>
+
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
 
 <!-- <body onload="draw();"> -->
 <body style="margin: 0;">
@@ -29,9 +31,6 @@
     let playerUnit = {}; //Player Unit Property
     let inventory = [];
 
-    let monsters = [];
-    const monsterRegenSpeed = 10 * 1000;     //Gap of Thread
-
     const threadSpeed = 12;     //Gap of Thread
     let keyPressOn = {};//pressed - trueaaaaaa
 
@@ -40,13 +39,10 @@
     let oldPush = 0;
     let pointer = {};
 
-    let droppedItems = [];
-
     let backgroundImg;
     let items = [];
     let itemInfo = []
     
-
     let gameLoopThread;  //animation Thread ID
 
     let mainBox = {};
@@ -65,57 +61,7 @@
         canvasCtx = canvas.getContext("2d");
         bufferCtx = canvasBuffer.getContext("2d");
 
-        itemInfo = [
-            {
-                type : 'weapon',
-                atk : 10
-            },{
-                type : 'weapon',
-                atk : 20
-            },{
-                type : 'weapon',
-                atk : 30
-            },{
-                type : 'weapon',
-                atk : 40
-            },{
-                type : 'armor',
-                def : 10
-            },{
-                type : 'armor',
-                def : 20
-            },{
-                type : 'armor',
-                def : 30
-            },{
-                type : 'armor',
-                def : 40
-            },{
-                type : 'shoes',
-                agi : 10
-            },{
-                type : 'shoes',
-                agi : 20
-            },{
-                type : 'shoes',
-                agi : 30
-            },{
-                type : 'shoes',
-                agi : 40
-            },{
-                type : 'pants',
-                hp : 10
-            },{
-                type : 'pants',
-                hp : 20
-            },{
-                type : 'pants',
-                hp : 30
-            }, {
-                type : 'pants',
-                hp : 40
-            }
-        ];
+        
 
         initPlayer(playerUnit);
 
@@ -128,10 +74,7 @@
         setImage();
 
         gameLoopThread = setInterval(gameLoop, threadSpeed);
-        monsterRegenThread = setInterval(genMonster, monsterRegenSpeed);
-
-        genMonster();
-
+        
         for(let i=0; i<13; i++){
             inventory[i] = {};
             inventory[i].id = undefined;
@@ -142,17 +85,14 @@
     let agl = 0;
     let x = 0;
     let size = 0;
-    let isCheckOut = false;
 
     function gameLoop(){  
         calcKeyInput();
         displayAll();
         if(!isPause){
-            moveMonster();
-            damageMonster();
-            checkRecall();
-            if(isCheckOut){
-                playerUnit.mp += 0.2
+            setPlayerStatus(playerUnit, 'health', playerUnit.hp + playerUnit.maxHp*0.002);
+            if(checkOut()){
+                playerUnit.mp += 0.5
                 agl += 2.3;
 
                 if(size < 100){
@@ -167,43 +107,39 @@
                 }
             }
             else{
-                size = x = 0;
+                size = x = a;
                 playerUnit.mp = 0;
             }
         }
     }
-
+    
     function displayAll(){
-        drawRoad();
+        drawVillage();
 
-        drawDroppedItems();
-
-        for(unit of monsters){
-            drawUnit(unit, ghost);
-            drawMonsterHPBar(color.black, color.red, color.gold, unit);
-        }
-
-        drawRecallRing(size, agl);
         setPlayerStatus(playerUnit, 'speed');
+        drawRecallRing(size, agl);
+        
         drawUnit(playerUnit);
 
-        drawMainUI();
+       
         
+
+        drawMainUI();
+                
         canvasCtx.drawImage(canvasBuffer, 0, 0);
     }
 
-    function checkRecall(){
-        const wasd = ['38', '40', '37', '39'];
-
-        if(keyPressOn["66"] && !isPause && !isCheckOut){
-            isCheckOut = true;
+    function checkOut(){
+        const p = {
+            x: playerUnit.x + playerUnit.width / 2,
+            y: playerUnit.y + playerUnit.height / 2
         }
-        for(key in wasd){
-            if(keyPressOn[wasd]){
-                isCheckOut = false;
-                break;
+        if(canvas.height*0.25 < p.y && p.y <  canvas.height*0.85){
+            if(0 < p.x && p.x <  canvas.width*0.1){
+                return true
             }
         }
+        return false;
     }
 </script>
 </html>

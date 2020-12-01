@@ -1,3 +1,15 @@
+
+// form.addEventListener('input', e =>{
+//   var id = form.id.value;
+//   var passwd = form.pw.value;
+      
+//   if(id !='' && passwd != '') form.submit.disabled = false;
+//   else form.submit.disabled = true;
+// });
+// form.id.onkeyup = function(e){
+//   var v = this.value;
+// this.value = v.replace(/[^a-z0-9]/gi, '')
+
 const color = {
   gold: '#726447',
   black: '#050D0B',
@@ -118,7 +130,16 @@ function drawMainUI() {
     drawInvenItem(i, inventory[i]);
   }
   if (isPause) {
-    drawPauseBox({ fill: color.darkGreen, line: color.gold });
+    if(playerUnit.hp <= 0){
+      drawPauseBox({ fill: color.darkGreen, line: color.gold }, 'die');  
+    }
+    else{
+      $("#logout").show();
+      drawPauseBox({ fill: color.darkGreen, line: color.gold }, 'pause');
+    }
+  }
+  else{
+    $("#logout").hide();
   }
 }
 
@@ -132,7 +153,7 @@ function drawDroppedItems() {
   }
 }
 
-function drawPauseBox(colorInfo) {
+function drawPauseBox(colorInfo, mode) {
   const { fill } = colorInfo;
   const { line } = colorInfo;
   const info = pauseBox;
@@ -163,6 +184,28 @@ function drawPauseBox(colorInfo) {
   bufferCtx.stroke();
   bufferCtx.fillStyle = fill;
   bufferCtx.fill();
+
+  if(mode == 'pause'){
+    bufferCtx.fillStyle = '#e9e9e9';
+    bufferCtx.font = `Bold ${info.height * 0.15}px Noto Sans KR`;
+    bufferCtx.fillText('일시 정지', info.width * 0.35, (info.height - info.height * 0.5) / 2);
+
+    bufferCtx.fillStyle = color.yellow;
+    bufferCtx.font = `Bold ${info.height * 0.1}px Noto Sans KR`;
+    bufferCtx.fillText('B', info.width * 0.11, (info.height - info.height * 0.1));
+    bufferCtx.fillStyle = '#e9e9e9';
+    bufferCtx.font = `Bold ${info.height * 0.1}px Noto Sans KR`;
+    bufferCtx.fillText('를 누르면 7초 후 마을로 귀환합니다.', info.width * 0.16, (info.height - info.height * 0.1));
+  }
+  else if(mode == 'die'){
+    bufferCtx.fillStyle = color.lightRed;
+    bufferCtx.font = `Bold ${info.height * 0.15}px Noto Sans KR`;
+    bufferCtx.fillText('죽었습니다', info.width * 0.325, (info.height - info.height * 0.5) / 2);
+
+    bufferCtx.fillStyle = '#e9e9e9';
+    bufferCtx.font = `Bold ${info.height * 0.1}px Noto Sans KR`;
+    bufferCtx.fillText('자동으로 마을로 돌아갑니다.', info.width * 0.2, (info.height - info.height * 0.3));
+  }
 
   bufferCtx.translate(-move1.x, -move1.y);
 }

@@ -27,6 +27,13 @@ function setCanvasSize() {
 
   setUnitSize(playerUnit, 0.06, 0.106, 2.5);
 
+
+  logoutBt.style.color = color.yellow;
+  logoutBt.style.fontSize = `${pauseBox.height * 0.12}px`;
+  logoutBt.style.left = `${((canvas.width - pauseBox.width) / 2) +  pauseBox.width * 0.325}px`;
+  logoutBt.style.top = `${((canvas.height - pauseBox.height) / 2) + (pauseBox.height * 0.43)}px`;
+  
+
   if (typeof monsters !== 'undefined') {
     for (m of monsters) {
       setUnitSize(m, 0.093, 0.166, 2.5);

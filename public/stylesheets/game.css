@@ -7,3 +7,17 @@ body, html {
     font-family: "Noto Sans KR", sans-serif;
     /* background-position: left; */
 }
+
+
+canvas{
+    z-index: 1;
+}
+
+a{
+    font-weight: bold;
+    text-decoration: none;
+    position: absolute;
+    display: none;
+    /* display: none; */
+    z-index: 2;
+}

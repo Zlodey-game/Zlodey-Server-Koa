@@ -2,7 +2,7 @@ function setImage() {
   backgroundImg = new Image();
   backgroundImg.src = '../images/village.jpg';
 
-  for (let i = 2; i < 14; i++) {
+  for (let i = 1; i <= 16; i++) {
     items[i] = new Image();
     items[i].src = `../images/${i}.png`;
   }

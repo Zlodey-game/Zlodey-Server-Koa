@@ -127,7 +127,7 @@ function moveInven(which, x, y, flg) {
 
         if (idx == 9) {
           inventory[origin].clicked = false;
-        } else {
+        } else if(origin<9 || inventory[idx].id == undefined || (itemInfo[inventory[idx].id - 1].type == availSlot[idx])){
           // console.log(idx);
           var temp = inventory[origin];
           inventory[origin] = inventory[idx];
@@ -135,6 +135,9 @@ function moveInven(which, x, y, flg) {
           // console.log(inventory[idx], inventory[origin]);
           inventory[idx].clicked = false;
           if (origin != idx && origin > 8) setPlayerStatus(playerUnit, idx, origin);
+        }
+        else{
+          inventory[origin].clicked = false;  
         }
       } else {
         inventory[origin].clicked = false;
@@ -155,6 +158,9 @@ function moveInven(which, x, y, flg) {
         if (idx == 4) {
           inventory[origin].clicked = false;
         } else if (itemInfo[inventory[origin].id - 1].type == availSlot[idx]) {
+          console.log(origin);
+          console.log(itemInfo[inventory[origin].id - 1].type);
+
           idx += 9;
           // console.log(idx);
           var temp = inventory[origin];
@@ -170,7 +176,8 @@ function moveInven(which, x, y, flg) {
         inventory[origin].clicked = false;
       }
     } else {
-      if (origin != idx) setPlayerStatus(playerUnit, null, origin);
+      //if (origin != idx) 
+      setPlayerStatus(playerUnit, null, origin);
       inventory[origin].clicked = false;
       inventory[origin] = {};
     }
@@ -208,6 +215,7 @@ function checkGetItem(unit, item, idx) {
     if (emptyIdx < 9 && emptyIdx >= 0) {
       inventory[emptyIdx].id = item.itemId;
       droppedItems.splice(idx, 1);
+      setInven(inventory);
     }
   }
 }
@@ -240,6 +248,8 @@ function calcKeyInput() {
             playerUnit.stat--;
             isPush = !isPush;
             oldPush = keyArr[i];
+            setStat('stats');
+            setStat('skillPoint');
           } else if (!keyPressOn[`${keyArr[i]}`] && isPush && oldPush == keyArr[i]) {
             isPush = false;
             oldPush = 0;
@@ -252,11 +262,11 @@ function calcKeyInput() {
   }
 
   // ESC
-  if (keyPressOn['27'] && !isPush && oldPush == 0) {
+  if (keyPressOn['27'] && !isPush && oldPush == 0 && playerUnit.hp > 0) {
     isPause = !isPause;
     isPush = !isPush;
     console.log(isPause);
-  } else if (!keyPressOn['27'] && isPush && oldPush == 0) {
+  } else if (!keyPressOn['27'] && isPush && oldPush == 0 && playerUnit.hp > 0) {
     isPush = !isPush;
   }
 
