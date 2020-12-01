@@ -7,6 +7,13 @@ const TokenModel = require('../model/token');
 
 const user = new UserModel();
 
+router.get('/exists', async (ctx) => {
+  const user = await UserModel.findOne({ id: ctx.request.query.id });
+
+  if (user === null) ctx.body = 'no user';
+  else ctx.body = 'exists';
+});
+
 router.get('/login', async (ctx) => {
   await ctx.render('login');
 });
@@ -42,6 +49,13 @@ router.post('/register', async (ctx) => {
 router.get('/logout', async (ctx) => {
   ctx.cookies.set('accessToken', null, { httpOnly: true, maxAge: 0 });
   ctx.status = 204;
+});
+
+router.get('/exists', async (ctx) => {
+  const user = await UserModel.findOne({ id: ctx.request.query.id });
+
+  if (user === null) ctx.body = 'no user';
+  else ctx.body = 'exists';
 });
 
 module.exports = router;

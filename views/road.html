@@ -6,19 +6,19 @@
     <title>road</title>
     
 </head>
-<link rel="stylesheet" href="../public/stylesheets/game.css">
-<script src="../public/javascripts/roadUi.js"></script>
+<link rel="stylesheet" href="../stylesheets/game.css">
+<script src="../javascripts/roadUi.js"></script>
 
 <!-- <script src="../javascripts/mainUi.js"></script>
 <script src="../javascripts/input.js"></script>
 <script src="../javascripts/unit.js"></script>
 <script src="../javascripts/window.js"></script> -->
 
-<script src="../public/javascripts/mainUi.js"></script>
-<script src="../public/javascripts/input.js"></script>
-<script src="../public/javascripts/unit.js"></script>
-<script src="../public/javascripts/window.js"></script>
-<script src="../public/javascripts/api.js"></script>
+<script src="../javascripts/mainUi.js"></script>
+<script src="../javascripts/input.js"></script>
+<script src="../javascripts/unit.js"></script>
+<script src="../javascripts/window.js"></script>
+<script src="../javascripts/api.js"></script>
 
 <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
 
@@ -33,6 +33,7 @@
 </body>
 <script type="application/javascript">
     const logoutBt = document.getElementById('logout');
+    redirectFlg = false;
 
     let canvas, canvasCtx;
     let canvasBuffer, bufferCtx;
@@ -140,7 +141,7 @@
                 else size = 100;
 
                 if(playerUnit.mp > 99){
-                    // 이동
+                    setVillage();
                 }
             }
             else{

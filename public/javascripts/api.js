@@ -122,3 +122,19 @@ const setItem = () => {
     
     //?itemID=3
 };
+
+let redirectFlg = false;
+
+const setRoad = () => {
+    if(!redirectFlg){
+        location.href = '/';
+        redirectFlg = true;
+    }
+}
+
+const setVillage = () => {
+    if(!redirectFlg){
+        location.href = '/village';
+        redirectFlg = true;
+    }
+}

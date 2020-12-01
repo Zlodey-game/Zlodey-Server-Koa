@@ -210,6 +210,7 @@ function damageMonster() {
             inventory[i] = {};
           }
           isPause = true;
+          setVillage();
         }
       }
     }

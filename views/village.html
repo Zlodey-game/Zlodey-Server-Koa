@@ -14,15 +14,22 @@
 <script src="../javascripts/input.js"></script>
 <script src="../javascripts/unit.js"></script>
 <script src="../javascripts/window.js"></script>
+<script src="../javascripts/api.js"></script>
 
 <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
 
 <!-- <body onload="draw();"> -->
 <body style="margin: 0;">
+
+    <a href="/users/logout" id = "logout">로그아웃 하기</a>
+
     <canvas id="canvas">
     </canvas>
 </body>
 <script type="application/javascript">
+    redirectFlg = false;
+    const logoutBt = document.getElementById('logout');
+
     let canvas, canvasCtx;
     let canvasBuffer, bufferCtx;
 
@@ -104,6 +111,7 @@
 
                 if(playerUnit.mp > 99){
                     // 이동
+                    setRoad();
                 }
             }
             else{
