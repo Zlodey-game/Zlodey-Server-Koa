@@ -127,7 +127,7 @@ let redirectFlg = false;
 
 const setRoad = () => {
     if(!redirectFlg){
-        location.href = '/';
+        location.href = '/road';
         redirectFlg = true;
     }
 }
