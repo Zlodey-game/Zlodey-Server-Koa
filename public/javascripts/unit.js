@@ -40,11 +40,11 @@ function initPlayer(unit) {
   unit.agl = 0;
 
   getStatus();
-  
+
   unit.mp = 0;
 
   getinven();
-  
+
 }
 
 function setUnitSize(unit, wd, hd, speed) {
@@ -194,7 +194,7 @@ function damageMonster() {
     };
 
     if ((((mw.xd < p.xd) && (p.xd < mw.xu)) || ((mw.xd < p.xu) && (p.xu < mw.xu)))
-           && (((mw.yd < p.yd) && (p.yd < mw.yu)) || ((mw.yd < p.yu) && (p.yu < mw.yu)))) {
+      && (((mw.yd < p.yd) && (p.yd < mw.yu)) || ((mw.yd < p.yu) && (p.yu < mw.yu)))) {
       //     console.log('p', p.xd, p.xu, p.yd, p.yu);
       // console.log('m', mw.xd, mw.xu, mw.yd, mw.yu);
       const agl = Math.atan2(playerUnit.x - m.x, m.y - playerUnit.y) * 180 / Math.PI;
@@ -205,7 +205,7 @@ function damageMonster() {
         playerUnit.y -= Math.cos(agl * 0.017453) * (m.oY_speed * 10.2);
 
         if (playerUnit.hp < 0) {
-          for (i = 9; i < 13; i++){
+          for (i = 9; i < 13; i++) {
             setPlayerStatus(playerUnit, null, i)
             inventory[i] = {};
           }
@@ -225,10 +225,10 @@ function dropItem(x, y) {
   min = Math.ceil(0);
   max = Math.floor(100);
   const randDrop = Math.floor(Math.random() * (max - min)) + min; // 최댓값은 제외, 최솟값은 포함
-  
-  console.log(randItem, itemInfo[randItem].drop, randDrop/100);
 
-  if(itemInfo[randItem].drop > randDrop/100){
+  console.log(randItem, itemInfo[randItem].drop, randDrop / 100);
+
+  if (itemInfo[randItem].drop > randDrop / 100) {
     const item = {
       itemId: randItem,
       x: x,
@@ -237,4 +237,5 @@ function dropItem(x, y) {
     };
     droppedItems.push(item);
   }
+  console.log(droppedItems);
 }
