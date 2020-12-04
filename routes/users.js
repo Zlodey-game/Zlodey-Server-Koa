@@ -43,7 +43,7 @@ router.post('/register', async (ctx) => {
   user.pw = ctx.request.body.pw;
 
   await user.save();
-  ctx.redirect('../login');
+  ctx.redirect('/users/login');
 });
 
 router.get('/logout', async (ctx) => {
